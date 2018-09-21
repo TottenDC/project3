@@ -43,7 +43,7 @@ function tshirtOptionDisplay(indexStart, indexEnd) {
   }
 }
 tshirtDisplayOff();
-//Create conditional selection of color based on design 
+//Create conditional selection of color based on design
 tshirtDesignInput.addEventListener('change', () => {
   const userSelection = tshirtDesignInput.value;
   if (userSelection === 'js puns') {
@@ -55,4 +55,26 @@ tshirtDesignInput.addEventListener('change', () => {
   } else {
     tshirtDisplayOff();
   }
+});
+
+const activitiesSection = document.querySelector('.activities');
+const activities = activitiesSection.querySelectorAll('label');
+activitiesSection.addEventListener('change', (event) => {
+  const activity = event.target;
+  const isChecked = activity.checked;
+  function disableCompetingActivity(activityName, competingActivityIndex) {
+    if (activity.name === activityName) {
+      if (isChecked) {
+        activities[competingActivityIndex].firstChild.setAttribute('disabled', '');
+        activities[competingActivityIndex].style.color = 'grey';
+      } else {
+        activities[competingActivityIndex].firstChild.removeAttribute('disabled');
+        activities[competingActivityIndex].style.color = '';
+      }
+    }
+  }
+  disableCompetingActivity('js-frameworks', 3);
+  disableCompetingActivity('js-libs', 4);
+  disableCompetingActivity('express', 1);
+  disableCompetingActivity('node', 2);
 });
