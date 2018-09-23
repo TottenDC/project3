@@ -137,3 +137,27 @@ paymentInput.addEventListener('change', () => {
     hidePayments (creditCardSection, payPalSection);
   }
 })
+
+//Form validation
+const submitButton = document.querySelector('button');
+const emailInput = document.querySelector('#mail');
+submitButton.addEventListener('click', (event) => {
+  const stop = () => event.preventDefault();
+  if (nameInput.value === '') {
+    stop();
+  }
+  const email = emailInput.value.toLowerCase();
+  if (email.indexOf('@') < 0 || email.indexOf('.com') < 0) {
+    stop();
+  }
+  let activitySelectedTotal = 0;
+  for (i=0; i < activities.length; i++) {
+    let isChecked = activities[i].firstChild.checked;
+    if (isChecked) {
+      activitySelectedTotal += 1;
+    }
+  }
+  if (activitySelectedTotal === 0) {
+    stop();
+  }
+})
