@@ -105,14 +105,18 @@ activitiesSection.addEventListener('change', (event) => {
   updateTotal();
 });
 
+
 const paymentInput = document.querySelector('#payment');
+//Set credit card to default selection and hide other informaiton
 const paymentOptions = paymentInput.children;
+paymentOptions[0].setAttribute('disabled', '');
 paymentOptions[1].setAttribute('selected', '');
 const creditCardSection = document.querySelector('#credit-card');
 const payPalSection = creditCardSection.nextElementSibling;
 const bitcoinSection = payPalSection.nextElementSibling;
 payPalSection.style.display = 'none';
 bitcoinSection.style.display = 'none';
+//Only show selected payment information / input
 paymentInput.addEventListener('change', () => {
   const paymentSelection = paymentInput.value;
   function displayAllPayments () {
@@ -121,21 +125,15 @@ paymentInput.addEventListener('change', () => {
     bitcoinSection.style.display = '';
   }
   function hidePayments (payment1, payment2) {
+    displayAllPayments();
     payment1.style.display = 'none';
     payment2.style.display = 'none';
   }
-  if (paymentSelection === 'select_method') {
-    creditCardSection.style.display = 'none';
-    payPalSection.style.display = 'none';
-    bitcoinSection.style.display = 'none';
-  } else if (paymentSelection === 'credit card') {
-    displayAllPayments();
+  if (paymentSelection === 'credit card') {
     hidePayments (payPalSection, bitcoinSection);
   } else if (paymentSelection === 'paypal') {
-    displayAllPayments();
     hidePayments (creditCardSection, bitcoinSection);
   } else if (paymentSelection === 'bitcoin') {
-    displayAllPayments();
     hidePayments (creditCardSection, payPalSection);
   }
 })
