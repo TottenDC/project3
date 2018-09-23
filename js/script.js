@@ -57,11 +57,19 @@ tshirtDesignInput.addEventListener('change', () => {
   }
 });
 
+//Grab activity portion of form
 const activitiesSection = document.querySelector('.activities');
 const activities = activitiesSection.querySelectorAll('label');
+//Add running total to DOM
+const activityTotal = document.createElement('p');
+let total = 0;
+activityTotal.textContent = `Total: $${total}`;
+activitiesSection.appendChild(activityTotal);
+//Create event handler for activities section
 activitiesSection.addEventListener('change', (event) => {
   const activity = event.target;
   const isChecked = activity.checked;
+//Disable competing activites
   function disableCompetingActivity(activityName, competingActivityIndex) {
     if (activity.name === activityName) {
       if (isChecked) {
@@ -77,4 +85,22 @@ activitiesSection.addEventListener('change', (event) => {
   disableCompetingActivity('js-libs', 4);
   disableCompetingActivity('express', 1);
   disableCompetingActivity('node', 2);
+//Update the total to reflect activity choices
+  function updateTotal() {
+    if (activity.name !== 'all') {
+      if (isChecked) {
+        total += 100;
+      } else {
+        total -= 100;
+      }
+    } else if (activity.name === 'all') {
+      if (isChecked) {
+        total += 200;
+      } else {
+        total -= 200;
+      }
+    }
+    activityTotal.textContent = `Total: $${total}`;
+  }
+  updateTotal();
 });
