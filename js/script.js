@@ -23,6 +23,7 @@ const tshirtDesignInput = document.querySelector('#design');
 const tshirtColorInput = document.querySelector('#color');
 const tshirtColorLabel = tshirtColorInput.previousElementSibling;
 const tshirtColorOptions = tshirtColorInput.children;
+//Create functions to turn the color selection on and off
 function tshirtDisplayOn() {
   tshirtColorLabel.style.display = '';
   tshirtColorInput.style.display = '';
@@ -31,8 +32,10 @@ function tshirtDisplayOff() {
   tshirtColorLabel.style.display = 'none';
   tshirtColorInput.style.display = 'none';
 }
+//Create a function to selectively display the colors pertenant to the design choice
 //The 'selected' attribute makes it responsive to the options available
 function tshirtOptionDisplay(indexStart, indexEnd) {
+//First turn off all display and remove attributes, then turn on appropriate options
   for (i=0; i<tshirtColorOptions.length; i++) {
     tshirtColorOptions[i].style.display = 'none';
     tshirtColorOptions[i].removeAttribute('selected');
@@ -60,7 +63,7 @@ tshirtDesignInput.addEventListener('change', () => {
 //Grab activity portion of form
 const activitiesSection = document.querySelector('.activities');
 const activities = activitiesSection.querySelectorAll('label');
-//Add running total to DOM
+//Add running total of selected activites to DOM
 const activityTotal = document.createElement('p');
 let total = 0;
 activityTotal.textContent = `Total: $${total}`;
@@ -105,7 +108,7 @@ activitiesSection.addEventListener('change', (event) => {
   updateTotal();
 });
 
-
+//Create a responsive payment section
 const paymentInput = document.querySelector('#payment');
 //Set credit card to default selection and hide other informaiton
 const paymentOptions = paymentInput.children;
@@ -143,21 +146,24 @@ const submitButton = document.querySelector('button');
 const emailInput = document.querySelector('#mail');
 submitButton.addEventListener('click', (event) => {
   const stop = () => event.preventDefault();
+//Create a function to append an error message above a 'faulty' section
   function addErrorMessage (message, elementWithError) {
     const paragraph = document.createElement('p');
     paragraph.style.color = 'red';
     paragraph.innerHTML = `<bold>${message}</bold>`;
     elementWithError.previousElementSibling.appendChild(paragraph);
   }
+//Check name
   if (nameInput.value === '') {
     stop();
     addErrorMessage('Please provide a name.', nameInput);
   }
-  // const email = emailInput.value.toLowerCase();
-  // if (email.indexOf('@') < 0 || email.indexOf('.com') < 0) {
-  //   stop();
-  //   addErrorMessage('Please provide a valid email address.', emailInput);
-  // }
+//Check email. Use .indexOf property of string (returns location or -1 if not there) for conditionals. 
+  const email = emailInput.value.toLowerCase();
+  if (email.indexOf('@') < 0 || email.indexOf('.com') < 0) {
+    stop();
+    addErrorMessage('Please provide a valid email address.', emailInput);
+  }
 //Activity selection validation
   let activitySelectedTotal = 0;
   for (i=0; i < activities.length; i++) {
@@ -198,6 +204,8 @@ submitButton.addEventListener('click', (event) => {
     }
   }
 });
+
+//Create a 'real-time' error message for email input.
 const emailErrorMessage = document.createElement('p');
 emailErrorMessage.style.color = 'red';
 emailErrorMessage.innerHTML = `<bold>Please provide a valid email address.</bold>`;
