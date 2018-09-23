@@ -160,4 +160,18 @@ submitButton.addEventListener('click', (event) => {
   if (activitySelectedTotal === 0) {
     stop();
   }
+  if (paymentInput.value === 'credit card') {
+    const ccNumberInput = document.querySelector('#cc-num');
+    const zipInput = document.querySelector('#zip');
+    const cvvInput = document.querySelector('#cvv');
+    if (isNaN(ccNumberInput.value) || ccNumberInput.value === '' || ccNumberInput.value.length < 13 || ccNumberInput.value.length > 16) {
+      stop();
+    }
+    if (isNaN(zipInput.value) || zipInput.value === '' || zipInput.value.length !== 5) {
+      stop();
+    }
+    if (isNaN(cvvInput.value) || cvvInput.value === '' || cvvInput.value.length !== 3) {
+      stop();
+    }
+  }
 })
