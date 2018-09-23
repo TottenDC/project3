@@ -143,13 +143,22 @@ const submitButton = document.querySelector('button');
 const emailInput = document.querySelector('#mail');
 submitButton.addEventListener('click', (event) => {
   const stop = () => event.preventDefault();
+  function addErrorMessage (message, elementWithError) {
+    const paragraph = document.createElement('p');
+    paragraph.style.color = 'red';
+    paragraph.innerHTML = `<bold>${message}</bold>`;
+    elementWithError.previousElementSibling.appendChild(paragraph);
+  }
   if (nameInput.value === '') {
     stop();
+    addErrorMessage('Please provide a name.', nameInput);
   }
-  const email = emailInput.value.toLowerCase();
-  if (email.indexOf('@') < 0 || email.indexOf('.com') < 0) {
-    stop();
-  }
+  // const email = emailInput.value.toLowerCase();
+  // if (email.indexOf('@') < 0 || email.indexOf('.com') < 0) {
+  //   stop();
+  //   addErrorMessage('Please provide a valid email address.', emailInput);
+  // }
+//Activity selection validation
   let activitySelectedTotal = 0;
   for (i=0; i < activities.length; i++) {
     let isChecked = activities[i].firstChild.checked;
@@ -159,19 +168,45 @@ submitButton.addEventListener('click', (event) => {
   }
   if (activitySelectedTotal === 0) {
     stop();
+    addErrorMessage('Please select at least one activity.', activityTotal);
   }
+//Credit card-specific validations and conditional error messages
   if (paymentInput.value === 'credit card') {
     const ccNumberInput = document.querySelector('#cc-num');
     const zipInput = document.querySelector('#zip');
     const cvvInput = document.querySelector('#cvv');
-    if (isNaN(ccNumberInput.value) || ccNumberInput.value === '' || ccNumberInput.value.length < 13 || ccNumberInput.value.length > 16) {
+    if (isNaN(ccNumberInput.value) || ccNumberInput.value === '') {
       stop();
+      addErrorMessage('Please enter a credit card number.', ccNumberInput);
+    } else if (ccNumberInput.value.length < 13 || ccNumberInput.value.length > 16) {
+      stop();
+      addErrorMessage('Please enter a 13-16 digit number.', ccNumberInput)
     }
-    if (isNaN(zipInput.value) || zipInput.value === '' || zipInput.value.length !== 5) {
+    if (isNaN(zipInput.value) || zipInput.value === '') {
       stop();
+      addErrorMessage('Please enter your zip code.', zipInput);
+    } else if (zipInput.value.length !== 5) {
+      stop();
+      addErrorMessage('Please enter a 5 digit number.', zipInput);
     }
-    if (isNaN(cvvInput.value) || cvvInput.value === '' || cvvInput.value.length !== 3) {
+    if (isNaN(cvvInput.value) || cvvInput.value === '') {
       stop();
+      addErrorMessage('Please enter your CVV number.', cvvInput);
+    } else if (cvvInput.value.length !== 3) {
+      stop();
+      addErrorMessage('Please enter a 3 digit number.', cvvInput);
     }
   }
-})
+});
+const emailErrorMessage = document.createElement('p');
+emailErrorMessage.style.color = 'red';
+emailErrorMessage.innerHTML = `<bold>Please provide a valid email address.</bold>`;
+emailInput.previousElementSibling.appendChild(emailErrorMessage);
+emailErrorMessage.style.display = 'none';
+emailInput.addEventListener('keyup', () => {
+  emailErrorMessage.style.display = '';
+  const email = emailInput.value.toLowerCase();
+  if (email.indexOf('@') > 0 && email.indexOf('.com') > 0) {
+    emailErrorMessage.style.display = 'none';
+  }
+});
